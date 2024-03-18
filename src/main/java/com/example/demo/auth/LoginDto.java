@@ -1,5 +1,6 @@
 package com.example.demo.auth;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 @Data
 @Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class LoginDto {
-    private String useremail;
+    private String userEmail;
     private String password;
 }

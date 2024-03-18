@@ -28,14 +28,13 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
 
     private final Key key;
-    private final AccountRepository accountRepository;
+    private final CustomUserDetailService customUserDetailService;
 
-    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey, @Autowired AccountRepository accountRepository){
+    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey, @Autowired CustomUserDetailService userDetailService){
         byte[] secretByteKey = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(secretByteKey);
-        this.accountRepository = accountRepository;
+        this.customUserDetailService = userDetailService;
     }
-
     // Member 정보를 가지고 AccessToken, RefreshToken을 생성하는 메서드
     public JwtToken generateToken(Authentication authentication) {
         // 권한 가져오기
@@ -70,20 +69,12 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String accessToken) {
         // Jwt 토큰 복호화
         Claims claims = parseClaims(accessToken);
-
         if (claims.get("auth")==null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
-        // 클레임에서 권한 정보 가져오기
-        Collection<? extends GrantedAuthority> authorities = Arrays.stream(claims.get("auth").toString().split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-        UserDetails principal = new User(claims.getSubject(),"",authorities);
-        return new UsernamePasswordAuthenticationToken(principal, "", new ArrayList<>());
+        UserDetails principal = customUserDetailService.loadUserByUsername(claims.getSubject());
+        return new UsernamePasswordAuthenticationToken(principal.getUsername(), principal.getPassword(), principal.getAuthorities());
     }
-
-
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
         try {
@@ -116,9 +107,8 @@ public class JwtTokenProvider {
         }
     }
 
-    private String reissueToken(String refreshToken){
-
-    }
-
+//    private String reissueToken(String refreshToken){
+//
+//    }
 
 }

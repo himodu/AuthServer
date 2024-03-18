@@ -2,29 +2,41 @@ package com.example.demo.filter;
 
 
 import com.example.demo.auth.JwtTokenProvider;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@WebFilter
 @RequiredArgsConstructor
-public class JwtAuthenticationFilter extends GenericFilterBean {
+public class JwtAuthenticationFilter extends OncePerRequestFilter{
     private final JwtTokenProvider jwtTokenProvider;
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{
-
-        String accesstoken = resolveToken((HttpServletRequest) request);
-        String refreshtoken = getRefreshToken((HttpServletRequest) request);
-
-        if(accesstoken != null && jwtTokenProvider.validateToken(accesstoken)){
-            Authentication authentication = jwtTokenProvider.getAuthentication(accesstoken);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException{
+        String accesstoken;
+        try{
+            accesstoken = resolveToken(request);
+            if(accesstoken==null){
+                throw new JwtException("토큰 인식 불가");
+            }
+            if(jwtTokenProvider.validateToken(accesstoken)){
+                Authentication authentication = jwtTokenProvider.getAuthentication(accesstoken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                System.out.println(SecurityContextHolder.getContext().getAuthentication());
+            }else{
+                throw new JwtException("토큰 유효하지 않음");
+            }
+        } catch(JwtException e){
+            e.printStackTrace();
         }
         chain.doFilter(request, response);
     }
