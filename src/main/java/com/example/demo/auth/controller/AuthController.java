@@ -1,5 +1,9 @@
-package com.example.demo.auth;
+package com.example.demo.auth.controller;
 
+import com.example.demo.auth.model.LoginDto;
+import com.example.demo.auth.model.RegisterDto;
+import com.example.demo.auth.service.AuthService;
+import com.example.demo.jwt.JwtToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

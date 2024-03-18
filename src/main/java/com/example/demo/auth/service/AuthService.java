@@ -1,8 +1,14 @@
-package com.example.demo.auth;
+package com.example.demo.auth.service;
 
 
 
+import com.example.demo.auth.infrastructure.Account;
+import com.example.demo.auth.infrastructure.AccountRepository;
+import com.example.demo.auth.model.RegisterDto;
+import com.example.demo.auth.infrastructure.Role;
 import com.example.demo.exception.AccountDuplicationException;
+import com.example.demo.jwt.JwtToken;
+import com.example.demo.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,8 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
