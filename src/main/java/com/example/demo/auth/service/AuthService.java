@@ -6,9 +6,9 @@ import com.example.demo.auth.infrastructure.Account;
 import com.example.demo.auth.infrastructure.AccountRepository;
 import com.example.demo.auth.model.RegisterDto;
 import com.example.demo.auth.infrastructure.Role;
-import com.example.demo.exception.AccountDuplicationException;
-import com.example.demo.jwt.JwtToken;
-import com.example.demo.jwt.JwtTokenProvider;
+import com.example.demo.auth.exception.AccountDuplicationException;
+import com.example.demo.auth.jwt.JwtToken;
+import com.example.demo.auth.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,7 +25,6 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-
     public JwtToken signIn(String useremail, String password){
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(useremail, password);
@@ -35,13 +34,12 @@ public class AuthService {
         return jwtToken;
     }
     @Transactional
-    public void register(RegisterDto registerDto){
+    public int register(RegisterDto registerDto){
         System.out.println(registerDto.getUserEmail());
 
         if(accountRepository.findByUserEmail(registerDto.getUserEmail()).isPresent()){
             throw new AccountDuplicationException("사용자 이름 중복");
         }
-
         Account account = Account.builder()
                 .userEmail(registerDto.getUserEmail())
                 .username(registerDto.getUsername())
@@ -50,5 +48,7 @@ public class AuthService {
                 .build();
 
         accountRepository.save(account);
+
+        return account.getId().intValue();
     }
 }

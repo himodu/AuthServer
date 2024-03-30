@@ -1,4 +1,4 @@
-package com.example.demo.jwt;
+package com.example.demo.auth.jwt;
 
 import com.example.demo.auth.infrastructure.CustomUserDetailService;
 import io.jsonwebtoken.*;

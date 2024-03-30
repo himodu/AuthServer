@@ -2,14 +2,17 @@ package com.example.demo.auth.controller;
 
 import com.example.demo.auth.model.LoginDto;
 import com.example.demo.auth.model.RegisterDto;
+import com.example.demo.auth.model.ResponseDto;
 import com.example.demo.auth.service.AuthService;
-import com.example.demo.jwt.JwtToken;
+import com.example.demo.auth.jwt.JwtToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("api/v1")
@@ -18,19 +21,21 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("register")
-    public ResponseEntity register(@RequestBody RegisterDto accountDto){
-        authService.register(accountDto);
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<ResponseDto> register(@RequestBody RegisterDto accountDto){
+        int id = authService.register(accountDto);
+        ResponseDto responseDto = new ResponseDto(201, "회원가입이 성공적으로 처리되었습니다.");
+        return ResponseEntity.created(URI.create("/account/"+id)).body(responseDto);
     }
     @PostMapping("login")
     public ResponseEntity<JwtToken> signIn(@RequestBody LoginDto loginDto){
         JwtToken token = authService.signIn(loginDto.getUserEmail(), loginDto.getPassword());
-        return new ResponseEntity<JwtToken>(token,null, HttpStatus.OK);
+        return ResponseEntity.ok().body(token);
     }
 
     @GetMapping("test")
-    public String test(){
+    public ResponseEntity<ResponseDto> test(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName() + "님 안녕하세요!";
+        ResponseDto responseDto = new ResponseDto(200, authentication.getName()+"님 안녕하세요!");
+        return ResponseEntity.ok().body(responseDto);
     }
 }
