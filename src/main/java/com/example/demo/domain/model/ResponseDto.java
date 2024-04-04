@@ -1,17 +1,12 @@
-package com.example.demo.auth.exception;
+package com.example.demo.domain.model;
 
 import lombok.*;
-
-import java.util.Date;
 
 @Data
 @Builder
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class ErrorMessage {
-
+public class ResponseDto {
     private int status;
-    private Date timeStamp;
     private String message;
-
 }

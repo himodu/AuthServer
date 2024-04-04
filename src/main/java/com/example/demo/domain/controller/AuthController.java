@@ -1,12 +1,11 @@
-package com.example.demo.auth.controller;
+package com.example.demo.domain.controller;
 
-import com.example.demo.auth.model.LoginDto;
-import com.example.demo.auth.model.RegisterDto;
-import com.example.demo.auth.model.ResponseDto;
-import com.example.demo.auth.service.AuthService;
-import com.example.demo.auth.jwt.JwtToken;
+import com.example.demo.domain.model.LoginDto;
+import com.example.demo.domain.model.RegisterDto;
+import com.example.demo.domain.model.ResponseDto;
+import com.example.demo.domain.service.AuthService;
+import com.example.demo.global.auth.jwt.JwtToken;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

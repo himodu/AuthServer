@@ -1,6 +1,8 @@
-package com.example.demo.auth.infrastructure;
+package com.example.demo.global.auth.login;
 
-import com.example.demo.auth.exception.AccountNotExistException;
+import com.example.demo.domain.infrastructure.Account;
+import com.example.demo.domain.infrastructure.AccountRepository;
+import com.example.demo.global.exception.AccountNotExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

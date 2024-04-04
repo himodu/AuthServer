@@ -1,7 +1,7 @@
-package com.example.demo.auth.filter;
+package com.example.demo.global.auth.filter;
 
 
-import com.example.demo.auth.jwt.JwtTokenProvider;
+import com.example.demo.global.auth.jwt.JwtTokenProvider;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;

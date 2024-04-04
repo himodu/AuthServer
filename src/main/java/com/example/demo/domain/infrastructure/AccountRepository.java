@@ -1,4 +1,4 @@
-package com.example.demo.auth.infrastructure;
+package com.example.demo.domain.infrastructure;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

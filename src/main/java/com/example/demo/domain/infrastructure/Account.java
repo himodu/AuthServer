@@ -1,4 +1,4 @@
-package com.example.demo.auth.infrastructure;
+package com.example.demo.domain.infrastructure;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

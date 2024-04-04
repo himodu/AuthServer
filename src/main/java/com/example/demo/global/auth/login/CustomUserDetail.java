@@ -1,5 +1,6 @@
-package com.example.demo.auth.infrastructure;
+package com.example.demo.global.auth.login;
 
+import com.example.demo.domain.infrastructure.Account;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,7 +1,7 @@
-package com.example.demo.auth.config;
+package com.example.demo.global.config;
 
-import com.example.demo.auth.jwt.JwtTokenProvider;
-import com.example.demo.auth.filter.JwtAuthenticationFilter;
+import com.example.demo.global.auth.jwt.JwtTokenProvider;
+import com.example.demo.global.auth.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,14 +1,14 @@
-package com.example.demo.auth.service;
+package com.example.demo.domain.service;
 
 
 
-import com.example.demo.auth.infrastructure.Account;
-import com.example.demo.auth.infrastructure.AccountRepository;
-import com.example.demo.auth.model.RegisterDto;
-import com.example.demo.auth.infrastructure.Role;
-import com.example.demo.auth.exception.AccountDuplicationException;
-import com.example.demo.auth.jwt.JwtToken;
-import com.example.demo.auth.jwt.JwtTokenProvider;
+import com.example.demo.domain.infrastructure.Account;
+import com.example.demo.domain.infrastructure.AccountRepository;
+import com.example.demo.domain.model.RegisterDto;
+import com.example.demo.domain.infrastructure.Role;
+import com.example.demo.global.exception.AccountDuplicationException;
+import com.example.demo.global.auth.jwt.JwtToken;
+import com.example.demo.global.auth.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

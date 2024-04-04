@@ -1,4 +1,4 @@
-package com.example.demo.auth.jwt;
+package com.example.demo.global.auth.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

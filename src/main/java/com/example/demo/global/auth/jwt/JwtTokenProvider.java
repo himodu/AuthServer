@@ -1,6 +1,6 @@
-package com.example.demo.auth.jwt;
+package com.example.demo.global.auth.jwt;
 
-import com.example.demo.auth.infrastructure.CustomUserDetailService;
+import com.example.demo.global.auth.login.CustomUserDetailService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
