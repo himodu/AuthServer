@@ -41,23 +41,23 @@ public class SecurityConfig {
                 .formLogin((auth)->auth.disable())
                 .httpBasic((auth)->auth.disable())
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource(){
-                            @Override
-                            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 
-                                CorsConfiguration configuration = new CorsConfiguration();
+                        CorsConfiguration configuration = new CorsConfiguration();
 
-                                configuration.setAllowedOrigins(Collections.singletonList("*"));
-                                configuration.setAllowedMethods(Collections.singletonList("*"));
-                                configuration.setAllowCredentials(true);
-                                configuration.setAllowedHeaders(Collections.singletonList("*"));
-                                configuration.setMaxAge(3600L);
+                        configuration.setAllowedOrigins(Collections.singletonList("*"));
+                        configuration.setAllowedMethods(Collections.singletonList("*"));
+                        configuration.setAllowCredentials(true);
+                        configuration.setAllowedHeaders(Collections.singletonList("*"));
+                        configuration.setMaxAge(3600L);
 
-                                configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
-                                configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+                        configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
+                        configuration.setExposedHeaders(Collections.singletonList("Authorization"));
 
-                                return configuration;
-                            }
-                        }))
+                        return configuration;
+                    }
+                }))
                 .oauth2Login((oauth2) -> oauth2
                         .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
                                 .userService(customOauth2UserService)))
