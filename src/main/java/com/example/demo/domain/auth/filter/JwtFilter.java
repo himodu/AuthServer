@@ -1,7 +1,7 @@
 package com.example.demo.domain.auth.filter;
 
-
 import com.example.demo.domain.auth.jwt.JWTUtile;
+
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;

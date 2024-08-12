@@ -1,14 +1,15 @@
 package com.example.demo.domain.auth.service;
 
 
-
+import com.example.demo.domain.auth.jwt.JWTUtile;
+import com.example.demo.domain.auth.jwt.JwtToken;
+import com.example.demo.domain.auth.model.RegisterDto;
 import com.example.demo.global.infrastructure.AccountEntity;
 import com.example.demo.global.infrastructure.AccountRepository;
-import com.example.demo.domain.auth.model.RegisterDto;
 import com.example.demo.global.infrastructure.Role;
 import com.example.demo.global.exception.AccountDuplicationException;
-import com.example.demo.domain.auth.jwt.JwtToken;
-import com.example.demo.domain.auth.jwt.JWTUtile;
+
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -25,7 +26,6 @@ public class AuthService {
     private final JWTUtile jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-
     public JwtToken signIn(String useremail, String password){
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(useremail, password);
@@ -35,14 +35,14 @@ public class AuthService {
         return jwtToken;
     }
     @Transactional
-    public void register(RegisterDto registerDto){
+    public int register(RegisterDto registerDto){
         System.out.println(registerDto.getUserEmail());
 
         if(accountRepository.findByUserEmail(registerDto.getUserEmail()).isPresent()){
             throw new AccountDuplicationException("사용자 이름 중복");
         }
-
         AccountEntity account = AccountEntity.builder()
+
                 .userEmail(registerDto.getUserEmail())
                 .username(registerDto.getUsername())
                 .password(passwordEncoder.encode(registerDto.getPassword()))
@@ -50,5 +50,7 @@ public class AuthService {
                 .build();
 
         accountRepository.save(account);
+
+        return account.getId().intValue();
     }
 }
