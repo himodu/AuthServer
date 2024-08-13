@@ -35,12 +35,13 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
         }
         String username = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
 
-        Optional<AccountEntity> existAccount = accountRepository.findByUserEmail(username);
+        Optional<AccountEntity> existAccount = accountRepository.findByUsername(username);
         AccountEntity accountEntity;
 
         if(existAccount.isEmpty()){
             accountEntity = AccountEntity.builder()
                     .username(username)
+                    .name(oAuth2Response.getName())
                     .userEmail(oAuth2Response.getEmail())
                     .role(Role.USER)
                     .build();
@@ -56,7 +57,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
 
         }else{
             accountEntity = existAccount.get();
-            accountEntity.setUsername(oAuth2Response.getName());
+            accountEntity.setUsername(username);
             accountEntity.setUserEmail(oAuth2Response.getEmail());
 
             accountRepository.save(accountEntity);

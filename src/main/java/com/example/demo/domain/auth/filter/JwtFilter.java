@@ -18,7 +18,7 @@ import java.io.IOException;
 @WebFilter
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter{
-    private final JWTUtile jwtTokenProvider;
+    private final JWTUtile jwtUtile;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException{
         String accesstoken;
@@ -27,8 +27,8 @@ public class JwtFilter extends OncePerRequestFilter{
             if(accesstoken==null){
                 throw new JwtException("토큰 인식 불가");
             }
-            if(jwtTokenProvider.validateToken(accesstoken)){
-                Authentication authentication = jwtTokenProvider.getAuthentication(accesstoken);
+            if(jwtUtile.validateToken(accesstoken)){
+                Authentication authentication = jwtUtile.getAuthentication(accesstoken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 System.out.println(SecurityContextHolder.getContext().getAuthentication());
             }else{

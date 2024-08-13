@@ -30,4 +30,24 @@ public class CustomExceptionHandler {
                 .timeStamp(new Date())
                 .build();
     }
+
+    @ExceptionHandler(TokenNullException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorMessage TokenNullException(TokenNullException ex){
+        return ErrorMessage.builder()
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .message(ex.getMessage())
+                .timeStamp(new Date())
+                .build();
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorMessage TokenExpiredException(TokenExpiredException ex){
+        return ErrorMessage.builder()
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .message(ex.getMessage())
+                .timeStamp(new Date())
+                .build();
+    }
 }

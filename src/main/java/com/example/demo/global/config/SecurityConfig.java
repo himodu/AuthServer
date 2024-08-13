@@ -46,7 +46,7 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("*"));
+                        configuration.setAllowedOrigins(Collections.singletonList("localhost:3000"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
@@ -64,8 +64,9 @@ public class SecurityConfig {
                         .successHandler(customSuccessHandler)
                 )
                 .authorizeHttpRequests((authorize)-> authorize
-                        .requestMatchers("/").permitAll()
-                        .anyRequest().hasRole("USER")
+                        .requestMatchers("api/v0/login", "api/v0/login").permitAll()
+                        .requestMatchers("api/v0/*").hasRole("ADMIN")
+                        .requestMatchers("api/v1/*").hasAnyRole("USER","ADMIN")
                 )
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new OauthJwtFilter(oAuthJwtUtil), UsernamePasswordAuthenticationFilter.class)

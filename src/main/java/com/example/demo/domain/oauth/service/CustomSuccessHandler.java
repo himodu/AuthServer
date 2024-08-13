@@ -1,7 +1,9 @@
 package com.example.demo.domain.oauth.service;
 
+import com.example.demo.domain.auth.jwt.JwtToken;
 import com.example.demo.domain.oauth.jwt.OAuthJwtUtil;
 import com.example.demo.domain.oauth.model.CustomOAuth2User;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,25 +32,26 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomOAuth2User customUserDetails = (CustomOAuth2User) authentication.getPrincipal();
 
         String username = customUserDetails.getUsername();
+        String name = customUserDetails.getName();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
-
-        String token = jwtUtil.createJwt(username, role, 60*60*60L);
-        response.addCookie(createCookie("Authorization", token));
+        String token = jwtUtil.createJwt(username,name,role, 600*60*60L);
+//        response.addCookie(createCookie("Authorization", token));
         response.setHeader("Authorization", token);
+
         response.sendRedirect("http://localhost:3000/");
     }
-
-    private Cookie createCookie(String key, String value) {
-
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60*60*60);
-        //cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-
-        return cookie;
-    }
+//
+//    private Cookie createCookie(String key, String value) {
+//
+//        Cookie cookie = new Cookie(key, value);
+//        cookie.setMaxAge(60*60*60);
+//        //cookie.setSecure(true);
+//        cookie.setPath("/");
+//        cookie.setHttpOnly(true);
+//
+//        return cookie;
+//    }
 }

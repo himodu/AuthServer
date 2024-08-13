@@ -12,35 +12,56 @@ import java.util.Date;
 
 @Component
 public class OAuthJwtUtil {
-    private SecretKey secretKey;
+
+    private final String BAERER_PREFIX = "Bearer ";
+
+    private final String USER_NAME = "username";
+    private final String NAME = "name";
+    private final String ROLE = "role";
+
+    private final SecretKey SECRET_KEY;
+
 
     public OAuthJwtUtil(@Value("${jwt.secret}") String secret) {
-        secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+        SECRET_KEY = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), Jwts.SIG.HS256.key().build().getAlgorithm());
+    }
+
+
+    private String unpackBearer(String token){
+        return new String(token.substring(BAERER_PREFIX.length()));
     }
 
     public String getUsername(String token) {
+        String unpackedToken = unpackBearer(token);
+        return Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(unpackedToken).getPayload().get(USER_NAME, String.class);
+    }
 
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("username", String.class);
+    public String getName(String token) {
+        String unpackedToken = unpackBearer(token);
+        return Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(unpackedToken).getPayload().get(NAME, String.class);
     }
 
     public String getRole(String token) {
-
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("role", String.class);
+        String unpackedToken = unpackBearer(token);
+        return Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(unpackedToken).getPayload().get(ROLE, String.class);
     }
 
     public Boolean isExpired(String token) {
-
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+        String unpackedToken = unpackBearer(token);
+        return Jwts.parser().verifyWith(SECRET_KEY).build().parseSignedClaims(unpackedToken).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String username, String role, Long expiredMs) {
+    public String createJwt(String username,String name, String role, Long expiredMs) {
 
-        return Jwts.builder()
-                .claim("username", username)
-                .claim("role", role)
+        String token =  Jwts.builder()
+                .claim(USER_NAME, username)
+                .claim(ROLE, role)
+                .claim(NAME, name)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
-                .signWith(secretKey)
+                .signWith(SECRET_KEY)
                 .compact();
+
+        return BAERER_PREFIX+token;
     }
 }

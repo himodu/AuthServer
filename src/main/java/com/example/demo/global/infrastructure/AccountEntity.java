@@ -3,7 +3,7 @@ package com.example.demo.global.infrastructure;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
+@Entity @Table(name = "Account")
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AccountEntity {
@@ -11,6 +11,7 @@ public class AccountEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String username;
+    private String name;
     private String userEmail;
     private String password;
     private String refreshToken;
@@ -18,8 +19,9 @@ public class AccountEntity {
     private Role role;
 
     @Builder
-    public AccountEntity(String username, String userEmail, String password, String refreshToken, Role role) {
+    public AccountEntity(String username, String name, String userEmail, String password, String refreshToken, Role role) {
         this.username = username;
+        this.name = name;
         this.userEmail = userEmail;
         this.password = password;
         this.refreshToken = refreshToken;

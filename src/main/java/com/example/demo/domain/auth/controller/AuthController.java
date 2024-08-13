@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v0")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
@@ -26,11 +26,5 @@ public class AuthController {
     public ResponseEntity<JwtToken> signIn(@RequestBody LoginDto loginDto){
         JwtToken token = authService.signIn(loginDto.getUserEmail(), loginDto.getPassword());
         return new ResponseEntity<JwtToken>(token,null, HttpStatus.OK);
-    }
-
-    @GetMapping("test")
-    public String test(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName() + "님 안녕하세요!";
     }
 }
